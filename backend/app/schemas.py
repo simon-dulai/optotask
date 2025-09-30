@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 
@@ -11,6 +11,7 @@ class TaskCreate(BaseModel):
     scans: bool = False
     referral: bool = False
     notes: Optional[str] = None
+    archived: bool = False
 
 
 class TaskUpdate(BaseModel):
@@ -21,6 +22,7 @@ class TaskUpdate(BaseModel):
     scans: Optional[bool] = None
     referral: Optional[bool] = None
     notes: Optional[str] = None
+    archived: Optional[bool] = None  # FIXED: Added Optional type
 
 
 class TaskResponse(BaseModel):
@@ -32,6 +34,37 @@ class TaskResponse(BaseModel):
     scans: bool
     referral: bool
     notes: Optional[str]
+    archived: bool
+    user_id: int  # FIXED: Added user_id field
 
     class Config:
         from_attributes = True  # Lets Pydantic read from SQLAlchemy models
+
+
+# ============================================
+# USER AUTHENTICATION SCHEMAS
+# ============================================
+
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: str
+
+    class Config:
+        from_attributes = True
