@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -16,6 +17,15 @@ from auth import (
 )
 
 app = FastAPI(title="OptoTask API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],  # React dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # OAuth2 scheme for token authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -200,6 +210,19 @@ def get_all_tasks(
 
     return tasks
 
+@app.get("/tickets/open", response_model=List[TaskResponse])
+def get_open_tickets(
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+):
+    """Get all open tickets for current user"""
+    tickets = db.query(Patient).filter(
+        Patient.user_id == current_user.id,
+        Patient.ticket_status == "open",
+        Patient.archived == False
+    ).all()
+
+    return tickets
 
 @app.put("/update/{patient_id}", response_model=TaskResponse)
 def update_task(
@@ -252,6 +275,8 @@ def archive_task(
     db.commit()
 
     return {"message": f"Patient {patient_id} archived successfully"}
+
+
 
 
 # ============================================

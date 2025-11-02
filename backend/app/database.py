@@ -1,9 +1,12 @@
 import sqlite3
+import os
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Enum, Boolean, Text, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship  # Not from .ext.declarative
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import enum
+
+
 
 Base = declarative_base()
 
@@ -64,8 +67,11 @@ class Patient(Base):
     def __repr__(self):
         return f"<Patient {self.idx}: {self.initial} - Status: {self.ticket_status}>"
 
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///optotask.db")
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+engine = create_engine(DATABASE_URL, echo=True)
 
-engine = create_engine("sqlite:///optotask.db", echo=True)
 Base.metadata.create_all(bind=engine)
 
 SessionLocal = sessionmaker(bind=engine)
