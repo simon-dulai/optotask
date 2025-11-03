@@ -7,12 +7,12 @@ from datetime import timedelta
 from typing import List
 import os
 
-from database import get_db, Patient, User
-from schemas import (
+from .database import get_db, Patient, User
+from .schemas import (
     TaskCreate, TaskUpdate, TaskResponse,
     UserCreate, UserLogin, Token, UserResponse
 )
-from auth import (
+from .auth import (
     verify_password, get_password_hash, create_access_token,
     SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 )
