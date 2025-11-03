@@ -1,6 +1,11 @@
 // src/Dashboard.js
 import React, { useState, useEffect } from 'react';
 
+// Add this at the top - will work for both local and production
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://optotask-backend.onrender.com'
+  : 'http://127.0.0.1:8000';
+
 function Dashboard({ token, onLogout }) {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [showFirstForm, setShowFirstForm] = useState(false);
@@ -46,7 +51,7 @@ function Dashboard({ token, onLogout }) {
 
   const loadOpenTickets = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/tickets/open', {
+      const response = await fetch(`${API_BASE_URL}/tickets/open`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -92,7 +97,7 @@ function Dashboard({ token, onLogout }) {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/create', {
+      const response = await fetch(`${API_BASE_URL}/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +161,7 @@ function Dashboard({ token, onLogout }) {
   // NEW: Close ticket (archive it)
   const handleCloseTicket = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/tasks/${selectedTicket.idx}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/${selectedTicket.idx}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -176,7 +181,7 @@ function Dashboard({ token, onLogout }) {
   // NEW: Update ticket with task completion status
   const handleUpdateTicket = async (updates) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/update/${selectedTicket.idx}`, {
+      const response = await fetch(`${API_BASE_URL}/update/${selectedTicket.idx}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -216,7 +221,7 @@ function Dashboard({ token, onLogout }) {
     if (!archiveSearch.trim()) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/read/${archiveSearch}`, {
+      const response = await fetch(`${API_BASE_URL}/read/${archiveSearch}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

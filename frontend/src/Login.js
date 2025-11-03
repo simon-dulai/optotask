@@ -1,6 +1,11 @@
 // src/Login.js
 import React, { useState } from 'react';
 
+// Add this at the top - will work for both local and production
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://optotask-backend.onrender.com'
+  : 'http://127.0.0.1:8000';
+
 function Login({ onLogin }) {
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState('');
@@ -17,7 +22,7 @@ function Login({ onLogin }) {
     try {
       if (isRegister) {
         // Register new user
-        const signupResponse = await fetch('http://127.0.0.1:8000/signup', {
+        const signupResponse = await fetch(`${API_BASE_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, password }),
@@ -36,7 +41,7 @@ function Login({ onLogin }) {
       formData.append('username', username);
       formData.append('password', password);
 
-      const loginResponse = await fetch('http://127.0.0.1:8000/login', {
+      const loginResponse = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         body: formData,
       });

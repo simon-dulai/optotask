@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from datetime import timedelta
 from typing import List
+import os
 
 from database import get_db, Patient, User
 from schemas import (
@@ -18,19 +19,25 @@ from auth import (
 
 app = FastAPI(title="OptoTask API")
 
+# Configure CORS for Render - allow your frontend URL
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],  # React dev server
+    allow_origins=[frontend_url, "http://localhost:3000", "http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
 # OAuth2 scheme for token authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
+# ... rest of your existing main.py code remains the same ...
 
+# Health check endpoint for Render
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "message": "OptoTask API is running"}
 # ============================================
 # AUTHENTICATION HELPER FUNCTIONS
 # ============================================
