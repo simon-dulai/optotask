@@ -52,11 +52,8 @@ class Patient(Base):
     notes = Column("Additional Notes", Text, nullable=True)
 
 
-    archived = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow)  # Bonus: timestamps!
 
-    # Foreign key to User
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
     archived = Column(Boolean, default=False)  # For permanent archive
 
     # Relationship to user
@@ -76,7 +73,7 @@ if os.getenv("RENDER"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 else:
     # For local development
-    DATABASE_URL = "sqlite:///./optotask.db"
+    DATABASE_URL = "sqlite:///" + os.path.join(os.path.dirname(__file__), "optotask.db")
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

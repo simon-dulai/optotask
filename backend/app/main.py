@@ -283,7 +283,26 @@ def archive_task(
 
     return {"message": f"Patient {patient_id} archived successfully"}
 
+@app.get("/search_archive/{patient_id}", response_model=TaskResponse)
+def search_archive(
+        patient_id: int,
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+):
+    """Search for a specific patient in archive (including archived patients)"""
+    patient = db.query(Patient).filter(
+        Patient.idx == patient_id,
+        Patient.user_id == current_user.id,
+        Patient.archived == True  # Only search archived patients
+    ).first()
 
+    if patient is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient not found in archive"
+        )
+
+    return patient
 
 
 # ============================================

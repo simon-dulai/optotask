@@ -221,7 +221,7 @@ function Dashboard({ token, onLogout }) {
     if (!archiveSearch.trim()) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/read/${archiveSearch}`, {
+      const response = await fetch(`${API_BASE_URL}/search_archive/${archiveSearch}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
