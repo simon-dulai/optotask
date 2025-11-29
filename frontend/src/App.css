@@ -864,3 +864,58 @@ body {
   border-color: #87CEEB;
   box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.1);
 }
+
+.audit-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.audit-btn:hover {
+  background: #5a6268;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-save-changes {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-referral-later {
+  background: #ffc107;
+  color: black;
+}
+
+.btn-postpone {
+  background: #6f42c1;
+  color: white;
+}
+
+.btn-close-ticket {
+  background: #28a745;
+  color: white;
+}
+
+.btn-cancel {
+  background: #6c757d;
+  color: white;
+}
