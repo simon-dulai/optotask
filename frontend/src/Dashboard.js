@@ -454,42 +454,42 @@ function Dashboard({ token, onLogout }) {
 
       {/* Archive Results */}
       {archiveResults.length > 0 && (
-      <div className="archive-results">
-        <h3>Archive Results</h3>
-        {archiveResults.map((ticket) => (
-          <div key={ticket.idx} className="ticket-bar">
-            <div className="ticket-info">
-              <span className="ticket-customer">{ticket.initial.toUpperCase()} </span>
-              <span className="ticket-initials">{ticket.idx}</span>
-              <button
-                className="audit-btn"
-                onClick={() => alert(
-                  `📊 Patient Audit:\n\n` +
-                  `Created: ${new Date(ticket.created_at).toLocaleString()}\n` +
-                  `Completed: ${ticket.closed_date ? new Date(ticket.closed_date).toLocaleString() : 'Not completed'}\n` +
-                  `Tasks Completed:\n` +
-                  `- Fields: ${ticket.fields_result || 'Not done'}\n` +
-                  `- IOPs: ${ticket.pressures_result || 'Not done'}\n` +
-                  `- Scans: ${ticket.scans_result || 'Not done'}\n` +
-                  `Referral Sent: ${ticket.referral_sent ? 'Yes' : 'No'}`
+          <div className="archive-results">
+            <h3>Archive Results</h3>
+            {archiveResults.map((ticket) => (
+              <div key={ticket.idx} className="ticket-bar">
+                <div className="ticket-info">
+                  <span className="ticket-customer">{ticket.initial.toUpperCase()} </span>
+                  <span className="ticket-initials">{ticket.idx}</span>
+                  <button
+                    className="audit-btn"
+                    onClick={() => alert(
+                      `📊 Patient Audit:\n\n` +
+                      `Created: ${new Date(ticket.created_at).toLocaleString()}\n` +
+                      `Completed: ${ticket.closed_date ? new Date(ticket.closed_date).toLocaleString() : 'Not completed'}\n` +
+                      `Tasks Completed:\n` +
+                      `- Fields: ${ticket.fields_result || 'Not done'}\n` +
+                      `- IOPs: ${ticket.pressures_result || 'Not done'}\n` +
+                      `- Scans: ${ticket.scans_result || 'Not done'}\n` +
+                      `Referral Sent: ${ticket.referral_sent ? 'Yes' : 'No'}`
+                    )}
+                  >
+                    📊 Audit
+                  </button>
+                </div>
+                <div className="ticket-tasks">
+                  <span className={ticket.fields ? 'task-active' : 'task-inactive'}>Fields</span>
+                  <span className={ticket.pressures ? 'task-active' : 'task-inactive'}>IOPs</span>
+                  <span className={ticket.scans ? 'task-active' : 'task-inactive'}>Scans</span>
+                  <span className={ticket.referral ? 'task-active' : 'task-inactive'}>Referral</span>
+                </div>
+                {ticket.notes && (
+                  <div className="ticket-notes">{ticket.notes}</div>
                 )}
-              >
-                📊 Audit
-              </button>
-            </div>
-            <div className="ticket-tasks">
-              <span className={ticket.fields ? 'task-active' : 'task-inactive'}>Fields</span>
-              <span className={ticket.pressures ? 'task-active' : 'task-inactive'}>IOPs</span>
-              <span className={ticket.scans ? 'task-active' : 'task-inactive'}>Scans</span>
-              <span className={ticket.referral ? 'task-active' : 'task-inactive'}>Referral</span>
-            </div>
-            {ticket.notes && (
-              <div className="ticket-notes">{ticket.notes}</div>
-            )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    )}
+        )}
 
       {/* Ticket Modal */}
       {showTicketModal && selectedTicket && (
@@ -599,8 +599,6 @@ function Dashboard({ token, onLogout }) {
                 </div>
 
                 <div className="modal-buttons">
-
-                  {/* Save Changes Button - preserves all ticks and notes */}
                   <button
                     onClick={() => {
                       handleUpdateTicket({
@@ -608,28 +606,8 @@ function Dashboard({ token, onLogout }) {
                         pressures_result: selectedTicket.pressures_result,
                         scans_result: selectedTicket.scans_result,
                         notes: selectedTicket.notes,
-                        referral: selectedTicket.referral,
-                        referral_sent: selectedTicket.referral_sent,
-                        referral_sent_date: selectedTicket.referral_sent_date,
-                        ticket_status: 'open'
-                      });
-                    }}
-                    className="btn-save-changes"
-                  >
-                    💾 Save Changes
-                  </button>
-
-                  {/* Send Referral Later Button - preserves ticks but marks referral for later */}
-                  <button
-                    onClick={() => {
-                      handleUpdateTicket({
-                        fields_result: selectedTicket.fields_result,
-                        pressures_result: selectedTicket.pressures_result,
-                        scans_result: selectedTicket.scans_result,
-                        notes: selectedTicket.notes,
-                        referral: true,  // Ensure referral is marked as needed
-                        referral_sent: false,  // But not sent yet
-                        referral_sent_date: null,
+                        referral: true,
+                        referral_sent: false,
                         ticket_status: 'open'
                       });
                     }}
@@ -637,11 +615,9 @@ function Dashboard({ token, onLogout }) {
                   >
                     📋 Send Referral Later
                   </button>
-
                   <button onClick={() => setModalView('postpone')} className="btn-postpone">
                     Postpone
                   </button>
-
                   <button
                     onClick={() => {
                       handleUpdateTicket({
@@ -653,16 +629,14 @@ function Dashboard({ token, onLogout }) {
                         referral_sent: selectedTicket.referral_sent,
                         referral_sent_date: selectedTicket.referral_sent_date,
                         completed: true,
-                        ticket_status: 'closed',
-                        closed_date: new Date().toISOString()
+                        ticket_status: 'closed'
                       });
                       handleCloseTicket();
                     }}
                     className="btn-close-ticket"
                   >
-                    ✅ All Tasks Completed
+                    All Tasks Completed
                   </button>
-
                   <button onClick={() => setShowTicketModal(false)} className="btn-cancel">
                     Cancel
                   </button>
