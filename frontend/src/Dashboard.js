@@ -202,7 +202,13 @@ function Dashboard({ token, onLogout }) {
 
   // NEW: Postpone ticket
   const handlePostpone = async (date) => {
-    await handleUpdateTicket({
+      await handleUpdateTicket({
+      fields_result: selectedTicket.fields_result,      // ADD THIS
+      pressures_result: selectedTicket.pressures_result, // ADD THIS
+      scans_result: selectedTicket.scans_result,        // ADD THIS
+      notes: selectedTicket.notes,
+      referral: selectedTicket.referral,
+      referral_sent: selectedTicket.referral_sent,
       review_date: date,
       ticket_status: 'postponed'
     });
