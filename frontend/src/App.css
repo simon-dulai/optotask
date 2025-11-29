@@ -895,27 +895,3 @@ body {
   font-size: 14px;
 }
 
-.btn-save-changes {
-  background: #17a2b8;
-  color: white;
-}
-
-.btn-referral-later {
-  background: #ffc107;
-  color: black;
-}
-
-.btn-postpone {
-  background: #6f42c1;
-  color: white;
-}
-
-.btn-close-ticket {
-  background: #28a745;
-  color: white;
-}
-
-.btn-cancel {
-  background: #6c757d;
-  color: white;
-}
