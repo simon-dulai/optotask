@@ -1,6 +1,14 @@
 # OptoTask
+[Demo](https://optotask.onrender.com)
 
-
+## Using Optotask
+1. Please register with a new username, email and password
+2. To add a new patient, use the + button and enter **exact** customer number
+3. Click on the created patient to add in test results and whether referral needed or not
+4. Use send referral later to keep in unfinished tasks
+5. Press all tasks completed to finish with patient
+6. Use the **exact** customer number to find patient in archive
+   
 ## Overview
 
 OptoTask is a full-stack Progressive Web Application (PWA) designed to streamline patient management workflows in optometry practices. The application addresses the challenge of tracking patient referrals, follow-ups, and task completion in a busy clinical environment.
@@ -70,7 +78,7 @@ optotask/
 13. DELETE /tasks/{patient_id}
 
 ## Deployment
-The application is deployed on <u>Render</u> with the following production setup:
+The application is deployed on [Render](https://optotask.onrender.com) with the following production setup:
 
 -Backend service with PostgreSQL database
 -Environment variables for secure credential management
