@@ -59,12 +59,19 @@ optotask/
 
 ### Patient/Task CRUD Endpoints (Protected — require JWT)
 6.POST /create → Create a new patient task
+
 7.GET /read/{patient_id} → Read a single patient task by ID
+
 8.GET /see_all → Get all non-archived patient tasks for current user
+
 9.GET /read_archive → Get all archived patient tasks for current user
+
 10.GET /search_archive/{patient_id} → Search for a specific patient in archive
+
 11.GET /tickets/open → Get all open tickets for current user
+
 12.PUT /update/{patient_id} → Update a patient task by ID
+
 13.DELETE /tasks/{patient_id}
 
 ## Deployment
