@@ -1,16 +1,14 @@
-OptoTask
+# OptoTask
 
 
-Overview
+## Overview
 
 OptoTask is a full-stack Progressive Web Application (PWA) designed to streamline patient management workflows in optometry practices. The application addresses the challenge of tracking patient referrals, follow-ups, and task completion in a busy clinical environment.
 
 
-Technologies: React, FastAPI, PostgreSQL, JWT Authentication, SQLAlchemy, TailwindCSS
-
 Target Audience: Optometrists & Ophthalmologists.
 
-Features:
+## Features:
 
 JWT implementation allows secure multi-user authentication
 CRUD operations designed for comprehensive patient management via a 'ticketing' system
@@ -19,7 +17,7 @@ Referral workflow management with color-coded priority system
 Responsive design for desktop and mobile access
 Real-time database synchronization across users for GDPR & NHS governance adherance
 
-Tech Stack:
+## Tech Stack:
 
 Frontend: React, JavaScript, TailwindCSS, PWA
 Backend: Python, FastAPI, SQLAlchemy
@@ -28,8 +26,8 @@ Authentication: JWT, bcrypt
 Deployment: Render
 Version Control: Git, GitHub
 
-Project Structure
-'''optotask/
+## Project Structure
+optotask/
 ├── backend/
 │   ├── app/
 │   │   ├── models/
@@ -46,30 +44,46 @@ Project Structure
 │   │   ├── Dashboard.js
 │   ├── public/
 │   └── package.json
-└── README.md'''
+└── README.md
 
-API Endpoints
+## API Endpoints
 
-POST /auth/register - User registration
-POST /auth/login - User authentication
-GET /tickets - Retrieve all patient tickets
-POST /tickets - Create new patient ticket
-PUT /tickets/{id} - Update ticket status
-DELETE /tickets/{id} - Delete ticket
+### Public Endpoints
+1.GET / → Welcome endpoint (returns a simple message)
+2.GET /health → Health check (used by Render to verify service is running)
 
-Deployment
-The application is deployed on Render with the following production setup:
+### Authentication Endpoints
+3.POST /signup → Create a new user account
+4.POST /login → Login with username & password, receive JWT access token
+5.GET /me → Get current authenticated user’s information
 
-Backend service with PostgreSQL database
-Environment variables for secure credential management
-CORS configuration for frontend-backend communication
-Production-grade gunicorn server
+### Patient/Task CRUD Endpoints (Protected — require JWT)
+6.POST /create → Create a new patient task
+7.GET /read/{patient_id} → Read a single patient task by ID
+8.GET /see_all → Get all non-archived patient tasks for current user
+9.GET /read_archive → Get all archived patient tasks for current user
+10.GET /search_archive/{patient_id} → Search for a specific patient in archive
+11.GET /tickets/open → Get all open tickets for current user
+12.PUT /update/{patient_id} → Update a patient task by ID
+13.DELETE /tasks/{patient_id}
 
-Future Improvements
+## Deployment
+The application is deployed on <u>Render</u> with the following production setup:
 
-Implement appointment scheduling functionality
-Add patient communication system with automated reminders
-Integrate with practice management software APIs
-Develop analytics dashboard for practice performance metrics
-Add export functionality for patient records
-Task postponement functionality with date tracking
+-Backend service with PostgreSQL database
+-Environment variables for secure credential management
+-CORS configuration for frontend-backend communication
+-Production-grade gunicorn server
+
+# Future Improvements
+The future for my project lies in its availability after further functional improvements:
+## Functional improvments:
+[] Implement task postponement  reminders before due date and display postponed task based on date requested
+[] Develop keyword analytics dashboard for referral counts based on pathology
+[] Add export functionality for patient audit proofs
+
+## Availability
+[] Containerise with Docker
+[] Deploy on AWS for large scale use
+[] Produce availability on Google Playstore 
+
