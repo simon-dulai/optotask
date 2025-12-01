@@ -18,12 +18,12 @@ Target Audience: Optometrists & Ophthalmologists.
 
 ## Features:
 
-JWT implementation allows secure multi-user authentication
-CRUD operations designed for comprehensive patient management via a 'ticketing' system
-Task completion tracking with visual status indicators
-Referral workflow management with color-coded priority system
-Responsive design for desktop and mobile access
-Real-time database synchronization across users for GDPR & NHS governance adherance
+- JWT implementation allows secure multi-user authentication
+- CRUD operations designed for comprehensive patient management via a 'ticketing' system
+- Task completion tracking with visual status indicators
+- Referral workflow management with color-coded priority system
+- Responsive design for desktop and mobile access
+- Real-time database synchronization across users for GDPR & NHS governance adherance
 
 ## Tech Stack:
 
