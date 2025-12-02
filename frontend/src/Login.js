@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 // Add this at the top - will work for both local and production
 const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://optotask-backend.onrender.com'
+  ? 'https://optotask-production.up.railway.app'
   : 'http://127.0.0.1:8000';
 
 function Login({ onLogin }) {
