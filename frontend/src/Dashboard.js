@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 // Add this at the top - will work for both local and production
 const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://optotask-backend.onrender.com'
+  ? 'https://optotask-production.up.railway.app'
   : 'http://127.0.0.1:8000';
 
 function Dashboard({ token, onLogout }) {
@@ -203,13 +203,12 @@ function Dashboard({ token, onLogout }) {
   // NEW: Postpone ticket
   const handlePostpone = async (date) => {
       await handleUpdateTicket({
-      fields_result: selectedTicket.fields_result,
-      pressures_result: selectedTicket.pressures_result,
-      scans_result: selectedTicket.scans_result,
+      fields_result: selectedTicket.fields_result,      // ADD THIS
+      pressures_result: selectedTicket.pressures_result, // ADD THIS
+      scans_result: selectedTicket.scans_result,        // ADD THIS
       notes: selectedTicket.notes,
       referral: selectedTicket.referral,
       referral_sent: selectedTicket.referral_sent,
-      referral_sent_date: selectedTicket.referral_sent_date,
       review_date: date,
       ticket_status: 'postponed'
     });
@@ -613,8 +612,8 @@ function Dashboard({ token, onLogout }) {
                         pressures_result: selectedTicket.pressures_result,
                         scans_result: selectedTicket.scans_result,
                         notes: selectedTicket.notes,
-                        referral: selectedTicket.referral,
-                        referral_sent: selectedTicket.referral_sent,
+                        referral: true,
+                        referral_sent: false,
                         ticket_status: 'open'
                       });
                     }}
