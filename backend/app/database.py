@@ -47,7 +47,7 @@ class Patient(Base):
     def __repr__(self):
         return f"<Patient {self.idx}: {self.initial} - Status: {self.ticket_status}>"
 
-# Database configuration for Railway
+# Database configuration for Railway2
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
