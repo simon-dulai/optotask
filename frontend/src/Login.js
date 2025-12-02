@@ -1,7 +1,7 @@
-// src/Login.js
+
 import React, { useState } from 'react';
 
-// Add this at the top - will work for both local and production
+
 const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://optotask-production.up.railway.app'
   : 'http://127.0.0.1:8000';
@@ -21,7 +21,7 @@ function Login({ onLogin }) {
 
     try {
       if (isRegister) {
-        // Register new user
+
         const signupResponse = await fetch(`${API_BASE_URL}/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -33,7 +33,7 @@ function Login({ onLogin }) {
           throw new Error(errorData.detail || 'Registration failed');
         }
 
-        // Auto-login after registration
+
       }
 
       // Login (works for both new registrations and existing users)

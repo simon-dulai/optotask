@@ -19,7 +19,7 @@ from .auth import (
 
 app = FastAPI(title="OptoTask API")
 
-# Configure CORS for Render - allow your frontend URL
+# CORS railway
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
 app.add_middleware(
     CORSMiddleware,
@@ -28,20 +28,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-#wow
-# OAuth2 scheme for token authentication
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
-# ... rest of your existing main.py code remains the same ...
 
-# Health check endpoint for Render
+# Health check
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "message": "OptoTask API is running"}
-# ============================================
-# AUTHENTICATION HELPER FUNCTIONS
-# ============================================
-
+#User points
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     """Get the current authenticated user from JWT token"""
     credentials_exception = HTTPException(
@@ -63,9 +58,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
-# ============================================
-# AUTHENTICATION ENDPOINTS
-# ============================================
+#Login points
 
 @app.post("/signup", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def signup(user_data: UserCreate, db: Session = Depends(get_db)):
@@ -78,7 +71,7 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
             detail="Username already registered"
         )
 
-    # Check if email already exists
+    # if email exists
     existing_email = db.query(User).filter(User.email == user_data.email).first()
     if existing_email:
         raise HTTPException(
@@ -86,7 +79,7 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
             detail="Email already registered"
         )
 
-    # Create new user
+    # new user
     hashed_password = get_password_hash(user_data.password)
     new_user = User(
         username=user_data.username,
@@ -102,8 +95,8 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/login", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    """Login and receive JWT access token"""
-    # Find user by username
+
+    # Find by username
     user = db.query(User).filter(User.username == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
@@ -112,7 +105,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Create access token
+
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
@@ -127,21 +120,18 @@ def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-# ============================================
-# PROTECTED PATIENT/TASK CRUD ENDPOINTS
-# ============================================
+#Task Points (login first)
 
 @app.post("/create", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 def create_task(
         task: TaskCreate,
         db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user)  # FIXED: Added auth
+        current_user: User = Depends(get_current_user)  # Added auth
 ):
-    """Create a new patient task (protected - user must be logged in)"""
-    # Check if patient ID already exists for THIS USER
+
     existing = db.query(Patient).filter(
         Patient.idx == task.idx,
-        Patient.user_id == current_user.id  # FIXED: Filter by user
+        Patient.user_id == current_user.id  # filter by user
     ).first()
 
     if existing:
@@ -158,7 +148,7 @@ def create_task(
         scans=task.scans,
         referral=task.referral,
         notes=task.notes,
-        user_id=current_user.id  # FIXED: Link to current user
+        user_id=current_user.id  # link to current user
     )
 
     db.add(new_patient)
@@ -174,10 +164,10 @@ def read_task(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user)  # FIXED: Added auth
 ):
-    """Read a single patient task (protected - only own patients)"""
+
     patient = db.query(Patient).filter(
         Patient.idx == patient_id,
-        Patient.user_id == current_user.id,  # FIXED: Filter by user
+        Patient.user_id == current_user.id,  # filter by user
         Patient.archived == False
     ).first()
 
@@ -193,11 +183,11 @@ def read_task(
 @app.get("/read_archive", response_model=List[TaskResponse])
 def get_archived_tasks(
         db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user)  # FIXED: Added auth
+        current_user: User = Depends(get_current_user)  # Auth
 ):
-    """Read all archived patient tasks for current user"""
+
     archived_patients = db.query(Patient).filter(
-        Patient.user_id == current_user.id,  # FIXED: Filter by user
+        Patient.user_id == current_user.id,
         Patient.archived == True
     ).all()
 
@@ -207,11 +197,11 @@ def get_archived_tasks(
 @app.get("/see_all", response_model=List[TaskResponse])
 def get_all_tasks(
         db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user)  # FIXED: Added auth
+        current_user: User = Depends(get_current_user)
 ):
-    """Read all non-archived patient tasks for current user"""
+
     tasks = db.query(Patient).filter(
-        Patient.user_id == current_user.id,  # FIXED: Filter by user
+        Patient.user_id == current_user.id,
         Patient.archived == False
     ).all()
 
@@ -222,7 +212,7 @@ def get_open_tickets(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user)
 ):
-    """Get all open tickets for current user"""
+
     tickets = db.query(Patient).filter(
         Patient.user_id == current_user.id,
         Patient.ticket_status == "open",
@@ -236,12 +226,12 @@ def update_task(
         patient_id: int,
         task_update: TaskUpdate,
         db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user)  # FIXED: Added auth
+        current_user: User = Depends(get_current_user)
 ):
-    """Update a patient task (protected - only own patients)"""
+
     patient = db.query(Patient).filter(
         Patient.idx == patient_id,
-        Patient.user_id == current_user.id  # FIXED: Filter by user
+        Patient.user_id == current_user.id
     ).first()
 
     if patient is None:
@@ -264,9 +254,9 @@ def update_task(
 def archive_task(
         patient_id: int,
         db: Session = Depends(get_db),
-        current_user: User = Depends(get_current_user)  # FIXED: Added auth
+        current_user: User = Depends(get_current_user)
 ):
-    """Soft delete (archive) a patient task (protected - only own patients)"""
+    #archive
     patient = db.query(Patient).filter(
         Patient.idx == patient_id,
         Patient.user_id == current_user.id  # FIXED: Filter by user
@@ -289,11 +279,11 @@ def search_archive(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user)
 ):
-    """Search for a specific patient in archive (including archived patients)"""
+
     patient = db.query(Patient).filter(
         Patient.idx == patient_id,
         Patient.user_id == current_user.id,
-        Patient.archived == True  # Only search archived patients
+        Patient.archived == True  # Only  archived patients
     ).first()
 
     if patient is None:
@@ -305,11 +295,9 @@ def search_archive(
     return patient
 
 
-# ============================================
-# ROOT ENDPOINT
-# ============================================
+#endpoint
 
 @app.get("/")
 def root():
-    """Welcome endpoint"""
+
     return {"message": "Welcome to OptoTask API! Go to /docs for API documentation"}

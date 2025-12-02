@@ -3,8 +3,8 @@ from typing import Optional
 from datetime import datetime
 
 class TaskCreate(BaseModel):
-    """Schema for creating a new task"""
-    idx: int  # Patient ID/customer number
+
+    idx: int  #customer number
     initial: str
     fields: bool = False
     pressures: bool = False
@@ -15,7 +15,7 @@ class TaskCreate(BaseModel):
 
 
 class TaskUpdate(BaseModel):
-    """Schema for updating a task - all fields optional"""
+
     initial: Optional[str] = None
     fields: Optional[bool] = None
     pressures: Optional[bool] = None
@@ -24,17 +24,17 @@ class TaskUpdate(BaseModel):
     notes: Optional[str] = None
     archived: Optional[bool] = None
     
-    # Result fields for task completion
+    # fields
     fields_result: Optional[str] = None
     pressures_result: Optional[str] = None
     scans_result: Optional[str] = None
     
-    # Referral tracking
+    # referral
     referral_reason: Optional[str] = None
     referral_sent: Optional[bool] = None
     referral_sent_date: Optional[datetime] = None
     
-    # Ticket management
+    # ticket system
     ticket_status: Optional[str] = None
     completed: Optional[bool] = None
     review_date: Optional[datetime] = None
@@ -42,7 +42,7 @@ class TaskUpdate(BaseModel):
 
 
 class TaskResponse(BaseModel):
-    """Schema for task responses from API"""
+
     idx: int
     initial: str
     fields: bool
@@ -51,19 +51,19 @@ class TaskResponse(BaseModel):
     referral: bool
     notes: Optional[str]
     archived: bool
-    user_id: int  # FIXED: Added user_id field
+    user_id: int
 
-    # NEW: Result fields
+
     fields_result: Optional[str] = None
     pressures_result: Optional[str] = None
     scans_result: Optional[str] = None
 
-    # NEW: Referral tracking
+
     referral_reason: Optional[str] = None
     referral_sent: bool = False
     referral_sent_date: Optional[datetime] = None
 
-    # NEW: Ticket management
+
     ticket_status: str = "open"
     completed: bool = False
     review_date: Optional[datetime] = None
@@ -73,11 +73,10 @@ class TaskResponse(BaseModel):
     class Config:
         from_attributes = True  # Lets Pydantic read from SQLAlchemy models
 
-# NEW SCHEMAS FOR TICKET MANAGEMENT
-# ============================================
+# New Ticket Management
 
 class PostponeTicket(BaseModel):
-    """Schema for postponing a ticket to a new date"""
+
     review_date: datetime
 
 
@@ -88,9 +87,7 @@ class UpdateWithResults(BaseModel):
     scans_result: Optional[str] = None  # e.g., "OCT normal" or "Glaucoma suspect"
     referral_reason: Optional[str] = None  # e.g., "High IOP, glaucoma suspect"
 
-# ============================================
-# USER AUTHENTICATION SCHEMAS
-# ============================================
+#User Auth
 
 class UserCreate(BaseModel):
     username: str

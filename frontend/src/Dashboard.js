@@ -1,7 +1,6 @@
-// src/Dashboard.js
+
 import React, { useState, useEffect } from 'react';
 
-// Add this at the top - will work for both local and production
 const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://optotask-production.up.railway.app'
   : 'http://127.0.0.1:8000';
@@ -12,16 +11,16 @@ function Dashboard({ token, onLogout }) {
   const [showSecondForm, setShowSecondForm] = useState(false);
   const [openTickets, setOpenTickets] = useState([]);
 
-  // NEW: Ticket modal state
+  // ticket modal state
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [modalView, setModalView] = useState('main'); // 'main', 'postpone', 'referral'
 
-  // NEW: Archive search
+  // archive search
   const [archiveSearch, setArchiveSearch] = useState('');
   const [archiveResults, setArchiveResults] = useState([]);
 
-  // Form state - First dropdown
+  // first dropdown
   const [customerNo, setCustomerNo] = useState('');
   const [initials, setInitials] = useState('');
   const [fields, setFields] = useState(false);
@@ -29,14 +28,14 @@ function Dashboard({ token, onLogout }) {
   const [scans, setScans] = useState(false);
   const [referral, setReferral] = useState(false);
 
-  // Form state - Second dropdown
+  // second dropdown
   const [fieldType, setFieldType] = useState('');
   const [iopNotes, setIopNotes] = useState('');
   const [scanType, setScanType] = useState('');
   const [referralReason, setReferralReason] = useState('');
   const [notes, setNotes] = useState('');
 
-  // Update time every second
+  // Update time
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDateTime(new Date());
@@ -91,7 +90,7 @@ function Dashboard({ token, onLogout }) {
       idx: parseInt(customerNo),
       initial: initials,
       fields: fields,
-      pressures: iops,  // Backend expects 'pressures'
+      pressures: iops,  // Backend 'pressures'
       scans: scans,
       referral: referral,
       notes: notes
@@ -108,7 +107,7 @@ function Dashboard({ token, onLogout }) {
       });
 
       if (response.ok) {
-        // Reset form
+        // Reset
         setCustomerNo('');
         setInitials('');
         setFields(false);
@@ -122,7 +121,7 @@ function Dashboard({ token, onLogout }) {
         setNotes('');
         setShowSecondForm(false);
 
-        // Reload tickets
+        // tickets
         loadOpenTickets();
       } else {
         alert('Failed to create patient');
@@ -179,7 +178,7 @@ function Dashboard({ token, onLogout }) {
     }
   };
 
-  // NEW: Update ticket with task completion status
+
   const handleUpdateTicket = async (updates) => {
     try {
       const response = await fetch(`${API_BASE_URL}/update/${selectedTicket.idx}`, {
@@ -201,7 +200,7 @@ function Dashboard({ token, onLogout }) {
     }
   };
 
-  // NEW: Postpone ticket
+  // postpone ticket
   const handlePostpone = async (date) => {
       await handleUpdateTicket({
       fields_result: selectedTicket.fields_result,      // ADD THIS
@@ -215,7 +214,7 @@ function Dashboard({ token, onLogout }) {
     });
   };
 
-  // NEW: Mark referral as sent
+  // referral as sent
   const handleReferralSent = async () => {
     await handleUpdateTicket({
       referral_sent: true,
@@ -223,7 +222,7 @@ function Dashboard({ token, onLogout }) {
     });
   };
 
-  // NEW: Archive search
+  // archive search
   const handleArchiveSearch = async () => {
     if (!archiveSearch.trim()) return;
 

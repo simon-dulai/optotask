@@ -4,10 +4,10 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 import os
 
-# Password hashing
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# JWT settings - get from environment variable for security
+# JWT
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here-change-this-in-production")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30

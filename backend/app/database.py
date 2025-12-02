@@ -47,17 +47,17 @@ class Patient(Base):
     def __repr__(self):
         return f"<Patient {self.idx}: {self.initial} - Status: {self.ticket_status}>"
 
-# Database configuration for Railway2
+# Railway
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    # Railway PostgreSQL - ensure we're using psycopg driver
+    # Railway PostgreSQL needs psycog
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
     elif DATABASE_URL.startswith("postgresql://"):
         DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 else:
-    # For local development - fallback to SQLite
+    # fallback SQLite
     DATABASE_URL = "sqlite:///./optotask.db"
 
 print(f"Connecting to database: {DATABASE_URL.split('@')[0]}@****")  # Log connection (hide password)
