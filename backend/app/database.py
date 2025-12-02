@@ -47,17 +47,20 @@ class Patient(Base):
     def __repr__(self):
         return f"<Patient {self.idx}: {self.initial} - Status: {self.ticket_status}>"
 
-# Database configuration for Render
-if os.getenv("RENDER"):
-    # For production on Render - use PostgreSQL with psycopg3
-    DATABASE_URL = os.getenv("DATABASE_URL")
-    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+# Database configuration for Railway
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # Railway PostgreSQL - ensure we're using psycopg driver
+    if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
-    elif DATABASE_URL and DATABASE_URL.startswith("postgresql://"):
+    elif DATABASE_URL.startswith("postgresql://"):
         DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
 else:
-    # For local development
+    # For local development - fallback to SQLite
     DATABASE_URL = "sqlite:///./optotask.db"
+
+print(f"Connecting to database: {DATABASE_URL.split('@')[0]}@****")  # Log connection (hide password)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
