@@ -203,12 +203,13 @@ function Dashboard({ token, onLogout }) {
   // NEW: Postpone ticket
   const handlePostpone = async (date) => {
       await handleUpdateTicket({
-      fields_result: selectedTicket.fields_result,      // ADD THIS
-      pressures_result: selectedTicket.pressures_result, // ADD THIS
-      scans_result: selectedTicket.scans_result,        // ADD THIS
+      fields_result: selectedTicket.fields_result,
+      pressures_result: selectedTicket.pressures_result,
+      scans_result: selectedTicket.scans_result,
       notes: selectedTicket.notes,
       referral: selectedTicket.referral,
       referral_sent: selectedTicket.referral_sent,
+      referral_sent_date: selectedTicket.referral_sent_date,
       review_date: date,
       ticket_status: 'postponed'
     });
@@ -612,8 +613,8 @@ function Dashboard({ token, onLogout }) {
                         pressures_result: selectedTicket.pressures_result,
                         scans_result: selectedTicket.scans_result,
                         notes: selectedTicket.notes,
-                        referral: true,
-                        referral_sent: false,
+                        referral: selectedTicket.referral,
+                        referral_sent: selectedTicket.referral_sent,
                         ticket_status: 'open'
                       });
                     }}

@@ -22,7 +22,23 @@ class TaskUpdate(BaseModel):
     scans: Optional[bool] = None
     referral: Optional[bool] = None
     notes: Optional[str] = None
-    archived: Optional[bool] = None  # FIXED: Added Optional type
+    archived: Optional[bool] = None
+    
+    # Result fields for task completion
+    fields_result: Optional[str] = None
+    pressures_result: Optional[str] = None
+    scans_result: Optional[str] = None
+    
+    # Referral tracking
+    referral_reason: Optional[str] = None
+    referral_sent: Optional[bool] = None
+    referral_sent_date: Optional[datetime] = None
+    
+    # Ticket management
+    ticket_status: Optional[str] = None
+    completed: Optional[bool] = None
+    review_date: Optional[datetime] = None
+    closed_date: Optional[datetime] = None
 
 
 class TaskResponse(BaseModel):
