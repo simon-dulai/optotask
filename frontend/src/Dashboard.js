@@ -47,6 +47,7 @@ function Dashboard({ token, onLogout }) {
   // Load open tickets on mount
   useEffect(() => {
     loadOpenTickets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadOpenTickets = async () => {
