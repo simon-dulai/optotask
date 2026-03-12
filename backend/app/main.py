@@ -23,7 +23,7 @@ app = FastAPI(title="OptoTask API")
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://optotask.up.railway.app", "http://localhost:3000", "http://localhost:3001"],
+    allow_origins=["https://optotask.up.railway.app", "http://localhost:3000", "http://localhost:3001", "https://localhost"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
