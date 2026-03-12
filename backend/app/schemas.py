@@ -79,7 +79,7 @@ class PostponeTicket(BaseModel):
 
     review_date: datetime
 
-
+#swag
 class UpdateWithResults(BaseModel):
     """Schema for updating task with results/outcomes"""
     fields_result: Optional[str] = None  # e.g., "All clear" or "Needs glaucoma referral"
